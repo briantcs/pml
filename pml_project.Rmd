@@ -1,0 +1,38 @@
+---
+title: "pml project"
+author: "Brian Tsang"
+date: "Sunday, May 24, 2015"
+output: html_document
+---
+Reading the training data set and testing data set
+
+```{r}
+training<-read.csv('pml-training.csv')
+testing<-read.csv('pml-testing.csv')
+```
+
+partitioning training data set for cross validation
+
+```{r}
+library(caret)
+inTrain<-createDataPartition(y=training$class,p=0.75,list=FALSE)
+train<-training[inTrain,]
+test<-training[-inTrain,]
+```
+
+building model on train data set by rpart
+
+```{r}
+modFit<-train(classe~.,method='rpart',data=train)
+
+```
+
+prediction based on model built
+
+```{r}
+predict(modFit,newdata=test)
+
+```
+
+
+
